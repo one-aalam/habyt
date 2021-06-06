@@ -11,3 +11,6 @@
 
 # Ignore Vim tag files
 tags
+
+# stuff I'm documenting while building this project
+docs
