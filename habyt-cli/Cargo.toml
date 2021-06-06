@@ -1,0 +1,9 @@
+[package]
+name = "habyt-cli"
+version = "0.1.0"
+authors = ["Aftab Alam <532906+one-aalam@users.noreply.github.com>"]
+edition = "2018"
+
+
+[dependencies]
+lib = { path =  "../lib" }
