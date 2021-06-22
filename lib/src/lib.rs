@@ -1,4 +1,4 @@
-
+#![allow(dead_code)]
 //! # Habyt
 //!
 //! `lib` is a collection of re-usable `habyt` code
@@ -11,10 +11,12 @@
 ///
 /// assert_eq!(lib::add_one(two), 3);
 /// ```
+
+pub mod models;
+
 pub fn add_one(x: i32) -> i32 {
     x + 1
 }
-
 
 #[cfg(test)]
 mod tests {
