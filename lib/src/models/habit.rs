@@ -3,7 +3,7 @@ use serde::__private::fmt::Error;
 use serde::__private::Formatter;
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, PartialEq)]
+#[derive(Serialize, Deserialize, PartialEq, Debug)]
 pub struct Habit {
     pub id: HabitId,
     pub name: HabitName,
@@ -90,10 +90,6 @@ impl Habit {
         notes: Option<String>,
     ) -> Self {
 
-        // if unit.len() > 15 {
-        //     panic!("Habit's unit cannot be longer than {} characters!", 15);
-        // }
-
         Self {
             id,
             name: name,
@@ -174,3 +170,6 @@ impl Habit {
         self.active = !self.active
     }
 }
+
+#[derive(PartialEq, Debug)]
+pub struct DeletedHabit(pub Habit);
