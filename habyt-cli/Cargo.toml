@@ -7,3 +7,4 @@ edition = "2018"
 
 [dependencies]
 lib = { path =  "../lib" }
+clap = "2.33.3"

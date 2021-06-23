@@ -50,13 +50,17 @@ impl HabitStore {
         self.data.get(&id)
     }
 
-    pub fn update_habit(&mut self, id: HabitId, patch: HabitPatch) -> Option<()> {
+    pub fn update(&mut self, id: HabitId, patch: HabitPatch) -> Option<()> {
         self.data.get_mut(&id).map(|h| {
             if let Some(name) = patch.name {
-                h.name = name;
+                if !name.0.is_empty() {
+                    h.name = name;
+                }
             }
             if let Some(quantum) = patch.quantum {
-                h.quantum = quantum;
+                if quantum > 0. {
+                    h.quantum = quantum;
+                }
             }
             if let Some(unit) = patch.unit {
                 h.unit = unit;
@@ -82,7 +86,6 @@ mod habit_store_tests {
     use crate::models::{ Habit, HabitDraft, HabitId, HabitName, HabitUnit, DeletedHabit, HabitPatch };
     use crate::store::HabitStore;
     use fake::{Fake, Faker};
-    use std::collections::HashSet;
 
     #[test]
     fn can_create_habit_with_provided_details() {

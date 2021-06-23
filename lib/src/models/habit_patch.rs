@@ -10,3 +10,26 @@ pub struct HabitPatch {
     pub kind: Option<Kind>,
     pub notes: Option<String>,
 }
+
+impl HabitPatch {
+    pub fn from(
+        name: String,
+        quantum: f64,
+        unit: String,
+        streak: Option<Streak>,
+        difficulty: Option<Difficulty>,
+        kind: Option<Kind>,
+        notes: Option<String>,
+    ) -> Self {
+
+        Self {
+            name: if name.is_empty() { None } else { Some(HabitName::new(name).expect("Habit name must be valid")) },
+            quantum: Some(quantum),
+            unit: if unit.is_empty() { None } else { Some(HabitUnit::new(unit).expect("Habit unit must be valid")) },
+            streak,
+            difficulty,
+            kind,
+            notes,
+        }
+    }
+}
