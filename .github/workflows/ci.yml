@@ -98,13 +98,13 @@ jobs:
         if: matrix.os != 'windows-latest'
         with:
           name: habyt-cli-${{ matrix.os }}
-          path: target/release/habyt
+          path: target/release
       - name: Upload windows binary
         uses: actions/upload-artifact@v1
         if: matrix.os == 'windows-latest'
         with:
           name: habyt-cli-${{ matrix.os }}
-          path: target/release/habyt.exe
+          path: target/release
 
   release:
     name: Release
