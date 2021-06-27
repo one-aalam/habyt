@@ -13,21 +13,18 @@ pub struct HabitLog {
 
 impl HabitLog {
     // as well as to the methods...
-    pub fn new(
-        id: u32,
-        quantum: f64,
-        notes: Option<String>,
-    ) -> Self {
-
+    pub fn new(id: u32, quantum: f64, notes: Option<String>) -> Self {
         Self {
             id,
             quantum,
             notes: match notes {
-                Some(n) if n.len() > 280 => panic!("Log's note cannot be longer than {} characters!", 280),
+                Some(n) if n.len() > 280 => {
+                    panic!("Log's note cannot be longer than {} characters!", 280)
+                }
                 Some(n) => n,
                 None => "".into(),
             },
-            date: Local::today().naive_local()
+            date: Local::today().naive_local(),
         }
     }
 }

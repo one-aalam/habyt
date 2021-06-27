@@ -1,4 +1,4 @@
-use crate::models::{ HabitName, HabitUnit, Streak, Difficulty, Kind };
+use crate::models::{Difficulty, HabitName, HabitUnit, Kind, Streak};
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct HabitDraft {
@@ -13,12 +13,7 @@ pub struct HabitDraft {
 
 impl HabitDraft {
     // as well as to the methods...
-    pub fn new(
-        name: String,
-        quantum: f64,
-        unit: String,
-    ) -> Self {
-
+    pub fn new(name: String, quantum: f64, unit: String) -> Self {
         Self {
             name: HabitName::new(name).expect("Habit name should exist"),
             quantum,
@@ -39,7 +34,6 @@ impl HabitDraft {
         kind: Option<Kind>,
         notes: Option<String>,
     ) -> Self {
-
         Self {
             name: HabitName::new(name).expect("Habit name should exist"),
             quantum,

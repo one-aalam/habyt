@@ -1,8 +1,7 @@
-use crate::models::{ Habit, HabitDraft, HabitId, DeletedHabit, HabitPatch, HabitLog };
+use crate::models::{DeletedHabit, Habit, HabitDraft, HabitId, HabitLog, HabitPatch};
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
-use chrono::NaiveDate;
-
 
 #[derive(Serialize, Deserialize)]
 pub struct HabitStore {
@@ -34,7 +33,7 @@ impl HabitStore {
             draft.streak,
             draft.difficulty,
             draft.kind,
-            draft.notes
+            draft.notes,
         );
         self.data.insert(habit.id, habit);
         id
@@ -130,7 +129,8 @@ impl HabitLogStore {
     }
 
     fn get_log_entry(&self, habit_id: &HabitId) -> Option<(&u32, &HabitLog)> {
-        return self.data
+        return self
+            .data
             .iter()
             .find(|(_, log_entry)| log_entry.id == *habit_id);
     }
@@ -138,7 +138,9 @@ impl HabitLogStore {
 
 #[cfg(test)]
 mod habit_store_tests {
-    use crate::models::{ Habit, HabitDraft, HabitId, HabitName, HabitUnit, DeletedHabit, HabitPatch };
+    use crate::models::{
+        DeletedHabit, Habit, HabitDraft, HabitId, HabitName, HabitPatch, HabitUnit,
+    };
     use crate::store::HabitStore;
     use fake::{Fake, Faker};
 
@@ -152,7 +154,9 @@ mod habit_store_tests {
         let habit_id = habit_store.create(draft.clone());
 
         //assert
-        let habit = habit_store.get(habit_id).expect("Failed to retrieve habit.");
+        let habit = habit_store
+            .get(habit_id)
+            .expect("Failed to retrieve habit.");
         assert_eq!(habit.name, draft.name);
         assert_eq!(habit.quantum, draft.quantum);
         assert_eq!(habit.unit, draft.unit);
@@ -260,6 +264,4 @@ mod habit_store_tests {
     //     assert_eq!(updated_habit.quantum, expected.quantum);
     //     assert_eq!(updated_habit.unit, expected.unit.expect("Failed to get the unit"));
     // }
-
-
 }

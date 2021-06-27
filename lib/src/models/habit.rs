@@ -31,7 +31,7 @@ impl std::fmt::Display for Habit {
 pub enum Streak {
     Daily,
     Weekly,
-    Monthly
+    Monthly,
 }
 impl Streak {
     pub fn to_string(&self) -> &str {
@@ -48,7 +48,7 @@ pub enum Difficulty {
     Trivial,
     Easy,
     Medium,
-    Hard
+    Hard,
 }
 impl Difficulty {
     fn to_string(&self) -> &str {
@@ -61,11 +61,10 @@ impl Difficulty {
     }
 }
 
-
 #[derive(PartialEq, Debug, Copy, Clone, Hash, Eq, Serialize, Deserialize)]
 pub enum Kind {
     Positive,
-    Negative
+    Negative,
 }
 impl Kind {
     fn to_string(&self) -> &str {
@@ -75,7 +74,6 @@ impl Kind {
         }
     }
 }
-
 
 impl Habit {
     // as well as to the methods...
@@ -89,26 +87,35 @@ impl Habit {
         kind: Option<Kind>,
         notes: Option<String>,
     ) -> Self {
-
         Self {
             id,
             name,
-            quantum: if quantum.is_sign_positive() { quantum } else { 0. },
-            unit: if unit.0.is_empty() { HabitUnit("unit".into()) } else { unit },
+            quantum: if quantum.is_sign_positive() {
+                quantum
+            } else {
+                0.
+            },
+            unit: if unit.0.is_empty() {
+                HabitUnit("unit".into())
+            } else {
+                unit
+            },
             streak: match streak {
                 Some(s) => s,
-                None => Streak::Daily
+                None => Streak::Daily,
             },
             difficulty: match difficulty {
                 Some(d) => d,
-                None => Difficulty::Easy
+                None => Difficulty::Easy,
             },
             kind: match kind {
                 Some(h) => h,
-                None => Kind::Positive
+                None => Kind::Positive,
             },
             notes: match notes {
-                Some(n) if n.len() > 280 => panic!("Habit's note cannot be longer than {} characters!", 280),
+                Some(n) if n.len() > 280 => {
+                    panic!("Habit's note cannot be longer than {} characters!", 280)
+                }
                 Some(n) => n,
                 None => "".into(),
             },
@@ -135,7 +142,7 @@ impl Habit {
     pub fn is_easy(&self) -> bool {
         match self.difficulty {
             Difficulty::Easy => true,
-            _ => false
+            _ => false,
         }
     }
 }
@@ -149,7 +156,7 @@ impl HasPosNeg for Habit {
     fn is_positive(&self) -> bool {
         match self.kind {
             Kind::Positive => true,
-            Kind::Negative => false
+            Kind::Negative => false,
         }
     }
     fn is_negative(&self) -> bool {

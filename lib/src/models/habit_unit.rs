@@ -1,4 +1,4 @@
-use crate::models::{ ValidationError };
+use crate::models::ValidationError;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
@@ -8,7 +8,9 @@ pub struct HabitUnit(pub String);
 impl HabitUnit {
     pub fn new(unit: String) -> Result<HabitUnit, ValidationError> {
         if unit.len() > 15 {
-            Err(ValidationError::new("Habit's unit cannot be longer than 15 characters!"))
+            Err(ValidationError::new(
+                "Habit's unit cannot be longer than 15 characters!",
+            ))
         } else {
             Ok(HabitUnit(unit))
         }
@@ -25,8 +27,7 @@ impl std::fmt::Display for HabitUnit {
 #[cfg(test)]
 mod habit_unit_tests {
     use crate::models::HabitUnit;
-    use fake::{Fake};
-
+    use fake::Fake;
 
     #[test]
     fn creating_a_unit_with_more_than_15chars_should_fail() {

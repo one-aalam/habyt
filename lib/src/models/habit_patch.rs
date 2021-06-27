@@ -1,4 +1,4 @@
-use crate::models::{ HabitName, HabitUnit, Streak, Difficulty, Kind };
+use crate::models::{Difficulty, HabitName, HabitUnit, Kind, Streak};
 
 #[derive(PartialEq, Debug, Clone)]
 pub struct HabitPatch {
@@ -21,11 +21,18 @@ impl HabitPatch {
         kind: Option<Kind>,
         notes: Option<String>,
     ) -> Self {
-
         Self {
-            name: if name.is_empty() { None } else { Some(HabitName::new(name).expect("Habit name must be valid")) },
+            name: if name.is_empty() {
+                None
+            } else {
+                Some(HabitName::new(name).expect("Habit name must be valid"))
+            },
             quantum: Some(quantum),
-            unit: if unit.is_empty() { None } else { Some(HabitUnit::new(unit).expect("Habit unit must be valid")) },
+            unit: if unit.is_empty() {
+                None
+            } else {
+                Some(HabitUnit::new(unit).expect("Habit unit must be valid"))
+            },
             streak,
             difficulty,
             kind,

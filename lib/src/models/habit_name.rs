@@ -1,4 +1,4 @@
-use crate::models::{ ValidationError };
+use crate::models::ValidationError;
 use serde::{Deserialize, Serialize};
 use std::fmt::Formatter;
 
@@ -10,9 +10,13 @@ impl HabitName {
         if name.is_empty() {
             Err(ValidationError::new("Habit's Name cannot be empty!"))
         } else if name.trim().split_whitespace().count() > 3 {
-            Err(ValidationError::new("Habit's name cannot have more than 3 words!!"))
+            Err(ValidationError::new(
+                "Habit's name cannot have more than 3 words!!",
+            ))
         } else if name.len() > 50 {
-            Err(ValidationError::new("Habit's name cannot be longer than 50 characters!"))
+            Err(ValidationError::new(
+                "Habit's name cannot be longer than 50 characters!",
+            ))
         } else {
             Ok(HabitName(name))
         }
@@ -29,7 +33,7 @@ impl std::fmt::Display for HabitName {
 #[cfg(test)]
 mod habit_name_tests {
     use crate::models::HabitName;
-    use fake::{Fake};
+    use fake::Fake;
 
     #[test]
     fn creating_an_empty_name_should_fail() {

@@ -1,5 +1,5 @@
 extern crate dirs;
-use crate::store::{ HabitStore, HabitLogStore };
+use crate::store::{HabitLogStore, HabitStore};
 
 use std::fs;
 use std::path::PathBuf;
@@ -12,7 +12,7 @@ pub struct HabitStoreFs {
     pub store: HabitStore,
     pub store_log: HabitLogStore,
     store_file: PathBuf,
-    store_file_log: PathBuf
+    store_file_log: PathBuf,
 }
 
 impl HabitStoreFs {
@@ -34,11 +34,13 @@ impl HabitStoreFs {
 
         if !store_file.is_file() {
             fs::File::create(&store_file).unwrap();
-            let content = serde_yaml::to_string(&HabitStore::new()).expect("Failed to serialize tickets");
+            let content =
+                serde_yaml::to_string(&HabitStore::new()).expect("Failed to serialize tickets");
             fs::write(&store_file, content).expect("Failed to write tickets to disk.");
 
             fs::File::create(&store_file_log).unwrap();
-            let content = serde_yaml::to_string(&HabitLogStore::new()).expect("Failed to serialize tickets");
+            let content =
+                serde_yaml::to_string(&HabitLogStore::new()).expect("Failed to serialize tickets");
             fs::write(&store_file_log, content).expect("Failed to write tickets to disk.");
 
             println!(
@@ -51,19 +53,15 @@ impl HabitStoreFs {
             store: HabitStore::new(),
             store_log: HabitLogStore::new(),
             store_file,
-            store_file_log
+            store_file_log,
         }
     }
 
     pub fn load(&mut self) {
         self.store = match fs::read_to_string(&self.store_file) {
-            Ok(data) => {
-                serde_yaml::from_str(&data).expect("Failed to parse serialised data.")
-            }
+            Ok(data) => serde_yaml::from_str(&data).expect("Failed to parse serialised data."),
             Err(e) => match e.kind() {
-                std::io::ErrorKind::NotFound => {
-                    HabitStore::new()
-                }
+                std::io::ErrorKind::NotFound => HabitStore::new(),
                 _ => panic!("Failed to read data."),
             },
         }
@@ -76,13 +74,9 @@ impl HabitStoreFs {
 
     pub fn load_log(&mut self) {
         self.store_log = match fs::read_to_string(&self.store_file_log) {
-            Ok(data) => {
-                serde_yaml::from_str(&data).expect("Failed to parse serialised data.")
-            }
+            Ok(data) => serde_yaml::from_str(&data).expect("Failed to parse serialised data."),
             Err(e) => match e.kind() {
-                std::io::ErrorKind::NotFound => {
-                    HabitLogStore::new()
-                }
+                std::io::ErrorKind::NotFound => HabitLogStore::new(),
                 _ => panic!("Failed to read data."),
             },
         }
