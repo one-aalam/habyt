@@ -81,6 +81,11 @@ jobs:
       #- name: ${{ matrix.make.name }}
       #  run: make ${{ matrix.make.task }}
 
+      - name: lint
+        uses: actions-rs/clippy-check@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Run tests
         run: cargo test --verbose
       - name: Build release
@@ -98,13 +103,13 @@ jobs:
         if: matrix.os != 'windows-latest'
         with:
           name: habyt-cli-${{ matrix.os }}
-          path: target/release
+          path: target/release/habyt-cli
       - name: Upload windows binary
         uses: actions/upload-artifact@v1
         if: matrix.os == 'windows-latest'
         with:
           name: habyt-cli-${{ matrix.os }}
-          path: target/release
+          path: target/release/habyt-cli.exe
 
   release:
     name: Release
