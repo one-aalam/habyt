@@ -92,7 +92,7 @@ impl Habit {
 
         Self {
             id,
-            name: name,
+            name,
             quantum: if quantum.is_sign_positive() { quantum } else { 0. },
             unit: if unit.0.is_empty() { HabitUnit("unit".into()) } else { unit },
             streak: match streak {

@@ -1,12 +1,19 @@
-use crate::models::{ Habit, HabitDraft, HabitId, DeletedHabit, HabitPatch };
+use crate::models::{ Habit, HabitDraft, HabitId, DeletedHabit, HabitPatch, HabitLog };
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use chrono::NaiveDate;
 
 
 #[derive(Serialize, Deserialize)]
 pub struct HabitStore {
     current_id: u32,
     data: HashMap<HabitId, Habit>,
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct HabitLogStore {
+    current_id: u32,
+    data: HashMap<u32, HabitLog>,
 }
 
 impl HabitStore {
@@ -78,6 +85,54 @@ impl HabitStore {
                 h.notes = notes;
             }
         })
+    }
+}
+
+impl HabitLogStore {
+    pub fn new() -> Self {
+        Self {
+            current_id: 0,
+            data: HashMap::new(),
+        }
+    }
+
+    pub fn add(&mut self, log: HabitLog) -> u32 {
+        let id = self.generate_id();
+        self.data.insert(id, log);
+        id
+    }
+
+    fn generate_id(&mut self) -> u32 {
+        self.current_id += 1;
+        self.current_id
+    }
+
+    pub fn get(&self, id: u32) -> Option<&HabitLog> {
+        self.data.get(&id)
+    }
+
+    pub fn list(&self) -> Vec<&HabitLog> {
+        self.data.iter().map(|(_, log_entry)| log_entry).collect()
+    }
+
+    pub fn get_log_by_habit(&self) -> HashMap<u32, Vec<(NaiveDate, f64)>> {
+        let mut log = HashMap::new();
+
+        for (_, log_entry) in self.data.iter() {
+            if !log.contains_key(&log_entry.id) {
+                log.insert(log_entry.id, vec![]);
+            }
+            log.get_mut(&log_entry.id)
+                .unwrap()
+                .push((log_entry.date, log_entry.quantum));
+        }
+        log
+    }
+
+    fn get_log_entry(&self, habit_id: &HabitId) -> Option<(&u32, &HabitLog)> {
+        return self.data
+            .iter()
+            .find(|(_, log_entry)| log_entry.id == *habit_id);
     }
 }
 
