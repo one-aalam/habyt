@@ -23,6 +23,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           WITH_V: true
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: tag-created
           client-payload: '{"new_version": "${{ steps.bump_version.outputs.new_tag }}"}'
